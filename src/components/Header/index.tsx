@@ -9,10 +9,10 @@ import {
   faSun,
   faUser,
 } from '@fortawesome/free-solid-svg-icons';
-import { memo, useEffect, useState } from 'react';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Logo from '../../assets/neutron.png';
+import { memo } from 'react';
 import { useAuth } from '@/lib/authProvider';
 import { useTheme } from '@/lib/themeProvider';
 

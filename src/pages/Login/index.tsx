@@ -1,17 +1,16 @@
-import axios from 'axios';
-import { useCallback, useMemo, useState } from 'react';
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { apiLogin, apiUrl } from '../../env';
+
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import React from 'react';
+import axios from 'axios';
+import { useAuth } from '@/lib/authProvider';
+import { useForm } from 'react-hook-form';
+import { useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
-import { Button } from '@/components/ui/button';
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { useAuth } from '@/lib/authProvider';
 
 const formSchema = z.object({
   email: z
