@@ -3,7 +3,6 @@ import { apiLogin, apiUrl } from '../../env';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import React from 'react';
 import axios from 'axios';
 import { useAuth } from '@/lib/authProvider';
 import { useForm } from 'react-hook-form';
