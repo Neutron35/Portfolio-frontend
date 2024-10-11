@@ -102,7 +102,7 @@ function Login() {
         <p className="text-2xl font-bold w-max mx-auto">Connexion</p>
         {renderEmailField}
         {renderPasswordField}
-        <Button type="submit" className="bg-primary-dark-500 dark:bg-primary-dark-500 text-text-light-500">
+        <Button type="submit" className="bg-primary-light-500 dark:bg-primary-dark-500 text-text-light-500">
           Se connecter
         </Button>
       </form>
