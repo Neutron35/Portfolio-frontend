@@ -1,12 +1,14 @@
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { apiProjects, apiUrl } from '@/env';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import axios from 'axios';
 
 function Account() {
   const [data, setData] = useState([]);
   const [selectedRepo, setSelectedRepo] = useState('');
+  const [projectData, setProjectData] = useState([]);
+  const checkFirstRender = useRef(true);
 
   async function getRepos() {
     try {
@@ -20,6 +22,24 @@ function Account() {
   useEffect(() => {
     getRepos();
   }, []);
+
+  useEffect(() => {
+    if (checkFirstRender.current) {
+      checkFirstRender.current = false;
+      return;
+    }
+    const getProject = async () => {
+      if (selectedRepo !== '') {
+        try {
+          const response = await axios.get(`${apiUrl}${apiProjects}${selectedRepo}`);
+          setProjectData(response.data);
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    };
+    getProject();
+  }, [selectedRepo]);
 
   return (
     <div>
