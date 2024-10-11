@@ -12,13 +12,13 @@ import NotFound from './pages/NotFound';
 import Projects from './pages/Projects';
 import SignUp from './pages/SignUp';
 import { StrictMode } from 'react';
-import ThemeContextProvider from './lib/useThemeContext';
+import ThemeProvider from './lib/themeProvider';
 import { createRoot } from 'react-dom/client';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <Router>
-      <ThemeContextProvider>
+      <ThemeProvider>
         <AuthProvider>
           <div className="min-h-screen font-display text-text-light-500 dark:text-text-dark-500 bg-background-light-500 dark:bg-background-dark-500">
             <Header />
@@ -36,7 +36,7 @@ createRoot(document.getElementById('root')!).render(
             </main>
           </div>
         </AuthProvider>
-      </ThemeContextProvider>
+      </ThemeProvider>
     </Router>
   </StrictMode>
 );
