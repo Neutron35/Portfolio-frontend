@@ -14,6 +14,7 @@ import { memo, useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Logo from '../../assets/neutron.png';
 import { useAuth } from '@/lib/authProvider';
+import { useTheme } from '@/lib/useThemeContext';
 
 // Memoize the FontAwesomeIcon component to prevent unnecessary re-renders
 const MemoizedFontAwesomeIcon = memo(FontAwesomeIcon);
@@ -26,8 +27,14 @@ const sunIcon = faSun;
 const moonIcon = faMoon;
 
 function Header() {
+  const { theme, toggleTheme } = useTheme();
+
   const { token, setToken } = useAuth();
   const navigate = useNavigate();
+
+  function handleToggle() {
+    toggleTheme();
+  }
 
   function handleLogout() {
     setToken();
@@ -77,19 +84,11 @@ function Header() {
               </MemoizedNavLink>
             )}
           </li>
-
-          {/*
-					<li className="ml-5 py-3.5 px-4">
-						<button>
-							<MemoizedFontAwesomeIcon icon={sunIcon} className="mr-2" />
-						</button>
-					</li>
-					<li className="ml-5 py-3.5 px-4">
-						<button>
-							<MemoizedFontAwesomeIcon icon={moonIcon} className="mr-2" />
-						</button>
-					</li>
-          */}
+          <li className="ml-5 py-3.5 px-4">
+            <button onClick={handleToggle}>
+              <MemoizedFontAwesomeIcon icon={theme ? moonIcon : sunIcon} className="mr-2" />
+            </button>
+          </li>
         </ul>
       </nav>
     </header>
