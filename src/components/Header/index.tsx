@@ -1,4 +1,3 @@
-import { memo, useEffect, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import {
   faAddressCard,
@@ -10,6 +9,8 @@ import {
   faSun,
   faUser,
 } from '@fortawesome/free-solid-svg-icons';
+import { memo, useEffect, useState } from 'react';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Logo from '../../assets/neutron.png';
 import { useAuth } from '@/lib/authProvider';
