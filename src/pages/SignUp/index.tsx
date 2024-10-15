@@ -38,7 +38,7 @@ function SignUp() {
         email,
         password,
       });
-      navigate('/login');
+      navigate('/');
       alert('Compte créé !');
     } catch (error) {
       console.log(error);

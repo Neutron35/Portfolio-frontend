@@ -1,3 +1,4 @@
+import { Dialog, DialogContent, DialogTrigger } from '../ui/dialog';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '../ui/dropdown-menu';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { NavigationMenu, NavigationMenuItem, NavigationMenuList } from '@/components/ui/navigation-menu';
@@ -14,6 +15,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Login from '../Login';
 import { Switch } from '../ui/switch';
 import logoImg from '../../assets/neutron.png';
 import { useAuth } from '@/lib/authProvider';
@@ -62,9 +64,14 @@ function Header() {
           </NavigationMenuItem>
           <NavigationMenuItem className="px-4 py-3.5">
             {!token ? (
-              <NavLink to="/login" className="ml-8">
-                <FontAwesomeIcon icon={faRightToBracket} />
-              </NavLink>
+              <Dialog>
+                <DialogTrigger>
+                  <FontAwesomeIcon icon={faRightToBracket} className="ml-8" />
+                </DialogTrigger>
+                <DialogContent>
+                  <Login />
+                </DialogContent>
+              </Dialog>
             ) : (
               <div>
                 <DropdownMenu>

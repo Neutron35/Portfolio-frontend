@@ -1,7 +1,9 @@
+import { DialogDescription, DialogHeader } from '../ui/dialog';
 import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form';
 import { apiLogin, apiUrl } from '../../env';
 
 import { Button } from '@/components/ui/button';
+import { DialogTitle } from '@radix-ui/react-dialog';
 import { Input } from '@/components/ui/input';
 import axios from 'axios';
 import { useAuth } from '@/lib/authProvider';
@@ -54,10 +56,10 @@ function Login() {
         control={form.control}
         name="email"
         render={({ field }) => (
-          <FormItem>
+          <FormItem className="mt-6">
             <FormLabel>Email</FormLabel>
             <FormControl>
-              <Input className="border border-input dark:border-input" placeholder="exemple@cocorico.fr" {...field} />
+              <Input placeholder="exemple@cocorico.fr" {...field} />
             </FormControl>
           </FormItem>
         )}
@@ -71,17 +73,10 @@ function Login() {
         control={form.control}
         name="password"
         render={({ field }) => (
-          <FormItem>
+          <FormItem className="mt-4">
             <FormLabel>Mot de passe</FormLabel>
             <FormControl>
-              <div className="relative">
-                <Input
-                  className="border border-input dark:border-input"
-                  type="password"
-                  placeholder="Votremotdepasse"
-                  {...field}
-                />
-              </div>
+              <Input type="password" placeholder="Votremotdepasse" {...field} />
             </FormControl>
           </FormItem>
         )}
@@ -92,13 +87,20 @@ function Login() {
   return (
     <Form {...form}>
       <form
-        className="mx-auto flex w-4/12 flex-col items-center gap-8 rounded-2xl border border-solid border-border px-12 pb-12 pt-4 text-lg"
         onSubmit={form.handleSubmit(onSubmit)}
+        className="mx-auto flex w-9/12 flex-col p-3 font-display text-lg dark:text-foreground"
       >
-        <p className="mx-auto w-max text-2xl font-bold">Connexion</p>
+        <DialogHeader>
+          <DialogTitle>Connexion</DialogTitle>
+          <DialogDescription>
+            Saisissez votre adresse mail et votre mot de passe afin de vous connecter.
+          </DialogDescription>
+        </DialogHeader>
         {renderEmailField}
         {renderPasswordField}
-        <Button type="submit">Se connecter</Button>
+        <Button className="mt-8" type="submit">
+          Se connecter
+        </Button>
       </form>
     </Form>
   );

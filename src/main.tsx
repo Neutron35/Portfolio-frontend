@@ -7,7 +7,6 @@ import Account from './pages/Account';
 import AuthProvider from './lib/authProvider';
 import Header from './components/Header';
 import Home from './pages/Home';
-import Login from './pages/Login';
 import NotFound from './pages/NotFound';
 import Projects from './pages/Projects';
 import SignUp from './pages/SignUp';
@@ -27,7 +26,6 @@ createRoot(document.getElementById('root')!).render(
                 <Route path="/" element={<Home />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/projects" element={<Projects />} />
-                <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<SignUp />} />
                 <Route path="/account" element={<Account />} />
                 <Route path="/notfound" element={<NotFound />} />
