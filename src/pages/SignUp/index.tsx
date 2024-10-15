@@ -1,10 +1,11 @@
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form';
 import { apiSignup, apiUrl } from '../../env';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import axios from 'axios';
 import { useForm } from 'react-hook-form';
+import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -19,7 +20,7 @@ const formSchema = z.object({
   }),
 });
 
-function Login() {
+function SignUp() {
   const navigate = useNavigate();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -33,70 +34,71 @@ function Login() {
     const email = values.email;
     const password = values.password;
     try {
-      const response = await axios.post(`${apiUrl}${apiSignup}`, {
+      await axios.post(`${apiUrl}${apiSignup}`, {
         email,
         password,
       });
-      window.localStorage.setItem('token', response.data.token);
-      navigate('/');
-      alert('Connecté');
+      navigate('/login');
+      alert('Compte créé !');
     } catch (error) {
       console.log(error);
     }
   }
 
+  const renderEmailField = useMemo(() => {
+    return (
+      <FormField
+        control={form.control}
+        name="email"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>Email</FormLabel>
+            <FormControl>
+              <Input className="border border-input dark:border-input" placeholder="exemple@cocorico.fr" {...field} />
+            </FormControl>
+          </FormItem>
+        )}
+      />
+    );
+  }, [form.control]);
+
+  const renderPasswordField = useMemo(() => {
+    return (
+      <FormField
+        control={form.control}
+        name="password"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>Mot de passe</FormLabel>
+            <FormControl>
+              <div className="relative">
+                <Input
+                  className="border border-input dark:border-input"
+                  type="password"
+                  placeholder="Votremotdepasse"
+                  {...field}
+                />
+              </div>
+            </FormControl>
+          </FormItem>
+        )}
+      />
+    );
+  }, [form.control]);
+
   return (
     <Form {...form}>
       <form
-        className="w-4/12 pt-4 pb-12 px-12 flex flex-col mx-auto items-center rounded-2xl gap-8 text-lg bg-secondary-light-500 dark:bg-secondary-dark-500"
+        className="mx-auto flex w-4/12 flex-col items-center gap-8 rounded-2xl border border-solid border-border px-12 pb-12 pt-4 text-lg"
         onSubmit={form.handleSubmit(onSubmit)}
       >
-        <p className="text-2xl font-bold w-max mx-auto">Créer un compte</p>
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Email</FormLabel>
-              <FormControl>
-                <Input placeholder="exemple@cocorico.fr" {...field} className="dark:text-text-light-500" />
-              </FormControl>
-              {/*
-              <FormDescription>Saisissez votre adresse email.</FormDescription>
-              <FormMessage />
-							*/}
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="password"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Mot de passe</FormLabel>
-              <FormControl>
-                <div className="relative">
-                  <Input
-                    type="password"
-                    placeholder="Votremotdepasse"
-                    {...field}
-                    className="dark:text-text-light-500"
-                  />
-                </div>
-              </FormControl>
-              {/*
-              <FormDescription>Saisissez votre mot de passe.</FormDescription>
-              <FormMessage />
-							*/}
-            </FormItem>
-          )}
-        />
-        <Button type="submit" className="bg-primary-dark-500 dark:bg-primary-dark-500 text-text-light-500">
-          S'inscrire
-        </Button>
+        <p className="mx-auto w-max text-2xl font-bold">Inscription</p>
+        {renderEmailField}
+        {renderPasswordField}
+        <Button type="submit">S'inscrire</Button>
       </form>
     </Form>
   );
 }
 
-export default Login;
+export default SignUp;

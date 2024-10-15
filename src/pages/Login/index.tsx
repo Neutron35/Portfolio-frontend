@@ -1,4 +1,4 @@
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form';
 import { apiLogin, apiUrl } from '../../env';
 
 import { Button } from '@/components/ui/button';
@@ -57,12 +57,8 @@ function Login() {
           <FormItem>
             <FormLabel>Email</FormLabel>
             <FormControl>
-              <Input placeholder="exemple@cocorico.fr" {...field} className="dark:text-text-light-500" />
+              <Input className="border border-input dark:border-input" placeholder="exemple@cocorico.fr" {...field} />
             </FormControl>
-            {/*
-            <FormDescription>Saisissez votre adresse email.</FormDescription>
-            <FormMessage />
-            */}
           </FormItem>
         )}
       />
@@ -79,13 +75,14 @@ function Login() {
             <FormLabel>Mot de passe</FormLabel>
             <FormControl>
               <div className="relative">
-                <Input type="password" placeholder="Votremotdepasse" {...field} className="dark:text-text-light-500" />
+                <Input
+                  className="border border-input dark:border-input"
+                  type="password"
+                  placeholder="Votremotdepasse"
+                  {...field}
+                />
               </div>
             </FormControl>
-            {/*
-            <FormDescription>Saisissez votre mot de passe.</FormDescription>
-            <FormMessage />
-            */}
           </FormItem>
         )}
       />
@@ -95,15 +92,13 @@ function Login() {
   return (
     <Form {...form}>
       <form
-        className="w-4/12 pt-4 pb-12 px-12 flex flex-col mx-auto items-center rounded-2xl gap-8 text-lg bg-secondary-light-500 dark:bg-secondary-dark-500"
+        className="mx-auto flex w-4/12 flex-col items-center gap-8 rounded-2xl border border-solid border-border px-12 pb-12 pt-4 text-lg"
         onSubmit={form.handleSubmit(onSubmit)}
       >
-        <p className="text-2xl font-bold w-max mx-auto">Connexion</p>
+        <p className="mx-auto w-max text-2xl font-bold">Connexion</p>
         {renderEmailField}
         {renderPasswordField}
-        <Button type="submit" className="bg-primary-light-500 dark:bg-primary-dark-500 text-text-light-500">
-          Se connecter
-        </Button>
+        <Button type="submit">Se connecter</Button>
       </form>
     </Form>
   );
