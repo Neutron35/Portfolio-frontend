@@ -20,9 +20,9 @@ createRoot(document.getElementById('root')!).render(
     <Router>
       <ThemeProvider>
         <AuthProvider>
-          <div className="min-h-screen font-display text-text-light-500 dark:text-text-dark-500 bg-background-light-500 dark:bg-background-dark-500">
+          <div className="min-h-screen bg-background font-display text-foreground">
             <Header />
-            <main className="max-w-screen-2xl mt-8 2xl:mx-auto">
+            <main className="mt-8 max-w-screen-2xl 2xl:mx-auto">
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/about" element={<About />} />
