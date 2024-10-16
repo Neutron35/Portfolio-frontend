@@ -59,3 +59,21 @@ export const createProject = async (req, res) => {
       .json({ message: 'Erreur de validation des données, cest là !' });
   }
 };
+
+export const modifyProject = async (req, res) => {
+  try {
+    const projectObject = req.body.project;
+
+    const project = await Project.findOne({ projectId: req.params.id });
+
+    if (!project) {
+      return res.status(404).json({ message: 'Projet non trouvé !' });
+    }
+
+    await Project.updateOne({ projectId: req.params.id }, { ...projectObject });
+
+    res.status(200).json({ message: 'Projet modifié !' });
+  } catch (error) {
+    res.status(500).json({ error });
+  }
+};
