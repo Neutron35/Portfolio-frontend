@@ -21,10 +21,10 @@ interface Project {
 }
 
 function Account() {
-  const [githubReposList, setGithubReposList] = useState<GitHubRepo[]>([]);
   const [projectsList, setProjectsList] = useState<Project[]>([]);
 
-  const getGithubRepos = async () => {
+  // Fonction pour récupérer les dépôts GitHub
+  const getGithubRepos = async (): Promise<GitHubRepo[]> => {
     try {
       const response = await axios.get(`https://api.github.com/users/${userGithub}/repos`, {
         headers: {
@@ -32,31 +32,44 @@ function Account() {
           'X-GitHub-Api-Version': '2022-11-28',
         },
       });
-      const filteredRepos: GitHubRepo[] = response.data.map((repo: any) => ({
+      // Spécification du type pour éviter l'usage implicite de 'any'
+      const filteredRepos: GitHubRepo[] = response.data.map((repo: { id: number; name: string; html_url: string }) => ({
         id: repo.id,
         name: repo.name,
         url: repo.html_url,
       }));
-      setGithubReposList(filteredRepos);
+      return filteredRepos; // Retourne les dépôts GitHub
     } catch (error) {
       console.log(error);
+      return [];
     }
   };
 
-  const getProjects = async () => {
+  // Fonction pour récupérer les projets depuis l'API
+  const getProjects = async (): Promise<Project[]> => {
     try {
       const response = await axios.get(`${apiUrl}${apiProjects}`);
-      setProjectsList(response.data);
+      return response.data; // Retourne les projets
     } catch (error) {
       console.log(error);
+      return [];
     }
   };
 
+  // Fonction pour comparer les dépôts GitHub avec les projets existants
   const compareReposAndProjects = async () => {
     try {
-      const existingProjectId = projectsList.map((project) => project.projectId);
-      for (const repo of githubReposList) {
-        if (!existingProjectId.includes(repo.id)) {
+      // Attendre que les deux requêtes soient terminées
+      const [githubRepos, projects] = await Promise.all([getGithubRepos(), getProjects()]);
+
+      // Mettre à jour la liste des projets
+      setProjectsList(projects);
+
+      for (const repo of githubRepos) {
+        const existingProject = projects.find((project: Project) => project.projectId === repo.id);
+
+        if (!existingProject) {
+          // Si le projet n'existe pas, on le crée
           await axios.post(`${apiUrl}${apiProjects}`, {
             project: {
               projectId: repo.id,
@@ -67,25 +80,33 @@ function Account() {
               linkToCode: repo.url,
             },
           });
-          console.log(`Projet créé pour le dépot ${repo.id} ${repo.name}`);
+          console.log(`Projet créé pour le dépôt ${repo.id} ${repo.name}`);
+        } else if (existingProject.title !== repo.name || existingProject.linkToCode !== repo.url) {
+          // Si le projet existe mais que certaines informations ont changé, on le met à jour
+          await axios.put(`${apiUrl}${apiProjects}/${existingProject.projectId}`, {
+            project: {
+              title: repo.name,
+              linkToCode: repo.url,
+            },
+          });
+          console.log(`Projet mis à jour pour le dépôt ${repo.id} ${repo.name}`);
+        } else {
+          // Si le projet est déjà à jour
+          console.log(`Projet déjà existant et à jour : ${repo.id} ${repo.name}`);
         }
       }
-      getProjects();
+
+      // Recharger la liste des projets après toutes les modifications
+      setProjectsList(await getProjects());
     } catch (error) {
-      console.log(error);
+      console.log('Erreur lors de la comparaison des dépôts et des projets', error);
     }
   };
 
+  // Lancer la comparaison une fois au chargement du composant
   useEffect(() => {
-    getGithubRepos();
-    getProjects();
+    compareReposAndProjects();
   }, []);
-
-  useEffect(() => {
-    if (githubReposList.length) {
-      compareReposAndProjects();
-    }
-  }, [githubReposList.length]);
 
   return (
     <Table className="mx-auto">
